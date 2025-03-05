@@ -52,6 +52,7 @@ import { SearchInputComponent } from '../../components/core/search-input/search-
 import { SearchService } from '../../services/search/search.service';
 import { BehaviorSubject } from 'rxjs';
 import { ExportFileFormat } from 'src/app/constants/export.constants';
+import { StoryTaskIdGeneratorService } from 'src/app/services/user-story/story-task-id-generator.service';
 
 @Component({
   selector: 'app-user-stories',
@@ -127,6 +128,7 @@ export class UserStoriesComponent implements OnInit {
     private jiraService: JiraService,
     private electronService: ElectronService,
     private toast: ToasterService,
+    private storyTaskIdGeneratorService: StoryTaskIdGeneratorService,
   ) {
     this.navigation = getNavigationParams(this.router.getCurrentNavigation());
     this.store.dispatch(
@@ -321,6 +323,10 @@ export class UserStoriesComponent implements OnInit {
         { features: userStories },
         this.navigation.fileName.replace(/\-base.json$/, ''),
       ),
+    );
+
+    this.storyTaskIdGeneratorService.updateFeatureAndTaskIds(
+      this.currentProject,
     );
 
     setTimeout(() => {
