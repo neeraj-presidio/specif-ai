@@ -34,7 +34,7 @@ import {
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { SearchInputComponent } from '../../../components/core/search-input/search-input.component';
 import { SearchService } from '../../../services/search/search.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { StoryTaskIdGeneratorService } from 'src/app/services/user-story/story-task-id-generator.service';
 
 @Component({
@@ -215,13 +215,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
           userStories,
         ),
       )
-      .subscribe({
-        next: () => {
+      .pipe(
+        switchMap(() =>
           this.storyTaskIdGeneratorService.updateFeatureAndTaskIds(
             this.config.currentProject,
             REQUIREMENT_TYPE.TASK,
-          );
-
+          ),
+        ),
+      )
+      .subscribe({
+        next: () => {
           this.getLatestUserStories();
           this.loadingService.setLoading(false);
           this.toastService.showSuccess(

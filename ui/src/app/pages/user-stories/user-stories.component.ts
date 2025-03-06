@@ -50,7 +50,7 @@ import {
 } from '../../constants/app.constants';
 import { SearchInputComponent } from '../../components/core/search-input/search-input.component';
 import { SearchService } from '../../services/search/search.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { ExportFileFormat } from 'src/app/constants/export.constants';
 import { StoryTaskIdGeneratorService } from 'src/app/services/user-story/story-task-id-generator.service';
 
@@ -325,12 +325,15 @@ export class UserStoriesComponent implements OnInit {
           this.navigation.fileName.replace(/\-base.json$/, ''),
         ),
       )
-      .subscribe({
-        next: () => {
+      .pipe(
+        switchMap(() =>
           this.storyTaskIdGeneratorService.updateFeatureAndTaskIds(
             this.currentProject,
-          );
-
+          ),
+        ),
+      )
+      .subscribe({
+        next: () => {
           this.getLatestUserStories();
           this.loadingService.setLoading(false);
           this.toast.showSuccess(
