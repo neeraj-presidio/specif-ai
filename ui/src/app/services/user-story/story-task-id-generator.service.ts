@@ -176,7 +176,7 @@ export class StoryTaskIdGeneratorService {
         Object.keys(fileContents).map(async (filePath) => {
           await this.appSystemService.writeFile(
             filePath,
-            JSON.stringify(fileContents[filePath], null, 2),
+            JSON.stringify(fileContents[filePath]),
           );
         }),
       );
