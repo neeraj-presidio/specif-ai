@@ -24,27 +24,11 @@ export class StoryTaskIdGeneratorService {
     private readonly store: Store,
   ) {}
 
-  async getNextStoryId(
-    projectName: string,
-    options?: { isRegenerate?: boolean; firstStoryId?: string },
-  ): Promise<number> {
-    const { isRegenerate, firstStoryId } = options || {};
-
-    if (isRegenerate && firstStoryId) {
-      return this.extractId(firstStoryId, 'US');
-    }
+  async getNextStoryId(projectName: string): Promise<number> {
     return this.getNextId(projectName, IdType.STORY);
   }
 
-  async getNextTaskId(
-    projectName: string,
-    options?: { isRegenerate?: boolean; firstTaskId?: string },
-  ): Promise<number> {
-    const { isRegenerate, firstTaskId } = options || {};
-
-    if (isRegenerate && firstTaskId) {
-      return this.extractId(firstTaskId, 'TASK');
-    }
+  async getNextTaskId(projectName: string): Promise<number> {
     return this.getNextId(projectName, IdType.TASK);
   }
 
