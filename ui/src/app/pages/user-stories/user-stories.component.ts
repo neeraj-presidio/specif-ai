@@ -317,25 +317,39 @@ export class UserStoriesComponent implements OnInit {
     userStories: IUserStory[],
     regenerate: boolean = false,
   ) {
-    this.store.dispatch(
-      new CreateFile(
-        `${this.navigation.folderName}`,
-        { features: userStories },
-        this.navigation.fileName.replace(/\-base.json$/, ''),
-      ),
-    );
+    this.store
+      .dispatch(
+        new CreateFile(
+          `${this.navigation.folderName}`,
+          { features: userStories },
+          this.navigation.fileName.replace(/\-base.json$/, ''),
+        ),
+      )
+      .subscribe({
+        next: () => {
+          this.storyTaskIdGeneratorService.updateFeatureAndTaskIds(
+            this.currentProject,
+          );
 
-    this.storyTaskIdGeneratorService.updateFeatureAndTaskIds(
-      this.currentProject,
-    );
-
-    setTimeout(() => {
-      this.getLatestUserStories();
-      this.loadingService.setLoading(false);
-      this.toast.showSuccess(
-        TOASTER_MESSAGES.ENTITY.GENERATE.SUCCESS(this.entityType, regenerate),
-      );
-    }, 2000);
+          this.getLatestUserStories();
+          this.loadingService.setLoading(false);
+          this.toast.showSuccess(
+            TOASTER_MESSAGES.ENTITY.GENERATE.SUCCESS(
+              this.entityType,
+              regenerate,
+            ),
+          );
+        },
+        error: (err) => {
+          this.loadingService.setLoading(false);
+          this.toast.showError(
+            TOASTER_MESSAGES.ENTITY.GENERATE.FAILURE(
+              this.entityType,
+              regenerate,
+            ),
+          );
+        },
+      });
   }
 
   getLatestUserStories() {
