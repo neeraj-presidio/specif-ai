@@ -9,10 +9,28 @@
   },
   "scripts": {
     "changeset": "npx @changesets/cli",
-    "version-packages": "npm run changeset version"
+    "version-packages": "npm run changeset version",
+    "prepare": "husky"
   },
   "author": {
     "name": "Presidio"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0"
+  },
+  "lint-staged": {
+    "ui/**/*.{ts,scss,html}": [
+      "cd ui && npm run lint",
+      "cd ui && npm run format"
+    ],
+    "electron/**/*.{js,ts}": [
+      "cd electron && npm run lint",
+      "cd electron && npm run format"
+    ]
+  }
+
 }
