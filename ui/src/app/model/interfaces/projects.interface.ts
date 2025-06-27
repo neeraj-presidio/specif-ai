@@ -15,6 +15,7 @@ export interface IRequirementConfig {
   minCount?: number;
   count: number;
 }
+
 export interface IProjectMetadata {
   id: string;
   name: string;
@@ -30,6 +31,7 @@ export interface IProjectMetadata {
   BP: IRequirementConfig;
   US: IRequirementConfig;
   TASK: IRequirementConfig;
+  integration?: object,
   isFailed?: boolean;
   failureInfo?: WorkflowErrorEvent;
 }

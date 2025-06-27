@@ -1,0 +1,69 @@
+<app-accordion
+  [withConnectionStatus]="true"
+  [isConnected]="isConnected"
+  title="Azure DevOps"
+  dynamicClass="text-sm font-medium text-secondary-950 ml-3"
+  iconImage="./assets/img/logo/azure-devops-logo.svg"
+  [isOpen]="isOpen"
+  (toggleAccordion)="onToggleAccordion()"
+>
+  <div class="flex justify-start pb-4">
+    <p class="text-sm font-normal text-secondary-500">
+      {{ APP_MESSAGES.ADO_ACCORDION }}
+    </p>
+  </div>
+  <div class="flex justify-start pb-4">
+    <p
+      class="text-sm font-normal text-secondary-500"
+      [innerHTML]="APP_MESSAGES.ADO_PREREQUISITE"
+    ></p>
+  </div>
+  <div [formGroup]="adoForm" class="grid grid-cols-2 gap-6 w-full">
+    <div class="flex items-start gap-2">
+      <div class="flex-1">
+        <app-input-field
+          formControlName="organization"
+          elementId="adoOrganization"
+          elementName="Organization Name"
+          elementPlaceHolder="Enter Azure DevOps Organization"
+        ></app-input-field>
+      </div>
+    </div>
+
+    <!-- Project Name Field -->
+    <div class="flex items-start gap-2">
+      <div class="flex-1">
+        <app-input-field
+          formControlName="projectName"
+          elementId="adoProjectName"
+          elementName="Project Name"
+          elementPlaceHolder="Enter Project Name"
+        ></app-input-field>
+      </div>
+    </div>
+
+    <!-- Personal Access Token Field -->
+    <div class="flex items-start gap-2 col-span-2">
+      <div class="flex-1">
+        <app-input-field
+          formControlName="personalAccessToken"
+          elementId="adoPersonalAccessToken"
+          elementName="Personal Access Token"
+          elementPlaceHolder="Enter Personal Access Token"
+          elementType="password"
+        ></app-input-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex justify-end items-center">
+    <app-button
+      [buttonContent]="isConnected ? 'Disconnect' : 'Connect'"
+      [theme]="isConnected ? 'danger' : 'primary'"
+      size="sm"
+      (click)="isConnected ? onDisconnect() : onConnect()"
+      [disabled]="!isConnected && editButtonDisabled"
+    >
+    </app-button>
+  </div>
+</app-accordion>
